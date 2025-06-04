@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="~{common :: commonHead}">
+    <title>Access Denied</title>
+</head>
+
+<body>
+<div class="container mt-5 text-center">
+    <h1 class="text-danger mb-4">접근이 거부되었습니다</h1>
+    <p class="lead">해당 페이지에 접근할 권한이 없습니다.</p>
+
+    <a class="btn btn-primary" th:href="@{/products}">제품 목록으로 이동</a>
+</div>
+
+<!-- Bootstrap JS fragment 삽입 -->
+<div th:insert="~{common :: commonScript}"></div>
+</body>
+</html>

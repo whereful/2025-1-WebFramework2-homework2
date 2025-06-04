@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+
+<head th:insert="~{common :: commonHead}">
+    <title>Product Manager</title>
+</head>
+
+<body>
+<div class="container">
+    <h1 class="mt-5">제품 목록</h1>
+
+    <!-- ✅ 로그인 정보와 로그아웃 버튼 -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <p class="mb-1">
+                안녕하세요.
+                <strong><span sec:authentication="principal.username">User</span></strong>
+                님
+            </p>
+            <p class="mb-1">역할:
+                <span th:each="auth : ${#authentication.authorities}" class="badge bg-secondary me-1"
+                      th:text="${auth.getAuthority()}">ROLE</span>
+            </p>
+        </div>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="로그아웃" class="btn btn-outline-danger btn-sm"/>
+        </form>
+    </div>
+
+    <!-- ✅ 관리자 전용 링크 -->
+    <div sec:authorize="hasRole('ROLE_ADMIN')" class="mb-3">
+        <a class="btn btn-warning" th:href="@{/userList}">사용자 목록 조회</a>
+    </div>
+
+    <!-- ✅ 제품 등록 버튼 (관리자만 보임) -->
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <a class="btn btn-primary mb-3" th:href="@{/products/new}">제품 등록하기</a>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Product ID</th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Made In</th>
+            <th>Price</th>
+            <!-- ✅ 관리자만 Actions 열을 봄 -->
+            <th sec:authorize="hasRole('ROLE_ADMIN')">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${listProducts}">
+            <td th:text="${product.id}">Product ID</td>
+            <td th:text="${product.name}">Name</td>
+            <td th:text="${product.brand}">Brand</td>
+            <td th:text="${product.madeIn}">Made in</td>
+            <td th:text="${product.price}">Price</td>
+
+            <!-- ✅ 수정/삭제 버튼 (관리자만 보임) -->
+            <td sec:authorize="hasRole('ROLE_ADMIN')">
+                <a class="btn btn-primary btn-sm" th:href="@{'/products/edit/' + ${product.id}}">Edit</a>
+                <a class="btn btn-danger btn-sm" th:href="@{'/products/delete/' + ${product.id}}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Bootstrap JS fragment 삽입 -->
+<div th:insert="~{common :: commonScript}"></div>
+</body>
+</html>
