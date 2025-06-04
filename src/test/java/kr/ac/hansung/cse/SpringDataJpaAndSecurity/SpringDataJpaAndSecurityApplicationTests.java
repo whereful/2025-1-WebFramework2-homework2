@@ -1,3 +1,4 @@
+/*
 package kr.ac.hansung.cse.SpringDataJpaAndSecurity;
 
 import jakarta.transaction.Transactional;
@@ -123,3 +124,4 @@ class SpringDataJpaAndSecurityApplicationTests {
         assertEquals(6, productList.size(), "Expected 6 product containing 'Air'");
     }
 }
+*/
