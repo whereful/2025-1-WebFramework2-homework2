@@ -58,7 +58,7 @@ public class WebSecurityConfig {
             "/images/**",
             "/about/**",
             "/contact/**",
-            "/error/**",
+            //"/error/**",
             "/console/**"
     };
 
@@ -72,10 +72,10 @@ public class WebSecurityConfig {
                         // GET 요청 시에 파라미터도 허용하려면 **을 붙여야 함
                         .requestMatchers("/login", "login/**").permitAll()
 
-                        // ✅ 로그인 사용자만 접근 가능한 경로
+                        // 로그인 사용자만 접근 가능한 경로
                         .requestMatchers("/products").authenticated()
 
-                        .requestMatchers("/user/**").hasRole("ADMIN")
+                        .requestMatchers("/userList").hasRole("ADMIN")
                         .requestMatchers("/products/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

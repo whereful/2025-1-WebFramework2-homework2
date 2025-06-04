@@ -1,5 +1,7 @@
 package kr.ac.hansung.cse.SpringDataJpaAndSecurity.controller;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,14 @@ public class LoginController {
                             @RequestParam(required = false) String passwordNotMatch,
                             @RequestParam(required = false) String email,
                             Model model) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        // 이미 로그인되어 있고, 익명 사용자가 아닌 경우
+        if (auth != null && auth.isAuthenticated() && !auth.getPrincipal().equals("anonymousUser")) {
+            return "redirect:/products";
+        }
+
         if (emailNotFound != null) {
             model.addAttribute("emailNotFound", true);
             model.addAttribute("email", email);
